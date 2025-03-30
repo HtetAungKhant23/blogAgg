@@ -1,0 +1,2 @@
+- use sqlc to handle query
+- use goose to handel migration
