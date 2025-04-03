@@ -34,13 +34,17 @@ type Feed struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func databaseFeedToFeed(dbFeed database.Feed) Feed {
-	return Feed{
-		ID:        dbFeed.ID,
-		Name:      dbFeed.Name,
-		Url:       dbFeed.Url,
-		UserID:    dbFeed.UserID,
-		CreatedAt: dbFeed.CreatedAt,
-		UpdatedAt: dbFeed.UpdatedAt,
+func databaseFeedsToFeeds(dbFeeds []database.Feed) []Feed {
+	feeds := []Feed{}
+	for _, feed := range dbFeeds {
+		feeds = append(feeds, Feed{
+			ID:        feed.ID,
+			Name:      feed.Name,
+			Url:       feed.Url,
+			UserID:    feed.UserID,
+			CreatedAt: feed.CreatedAt,
+			UpdatedAt: feed.UpdatedAt,
+		})
 	}
+	return feeds
 }
