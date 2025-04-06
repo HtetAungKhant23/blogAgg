@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/HtetAungKhant23/blogAgg/internal/database"
 	"github.com/go-chi/chi/v5"
@@ -14,6 +13,9 @@ import (
 
 	_ "github.com/lib/pq"
 )
+
+// encode(sha256(random()::text::bytea), 'hex') -> for postgres
+// uuid_generate_v4()::string -> for cockroach
 
 type apiConfig struct {
 	DB *database.Queries
@@ -42,7 +44,7 @@ func main() {
 		DB: db,
 	}
 
-	go startScraping(db, 10, time.Minute)
+	// go startScraping(db, 10, time.Minute)
 
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
