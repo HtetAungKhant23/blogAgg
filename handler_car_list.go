@@ -97,7 +97,7 @@ func (apiCfg *apiConfig) handlerCarList(w http.ResponseWriter, r *http.Request) 
 	responseWithJSON(w, 200, struct {
 		Message    string `json:"message"`
 		StatusCode int    `json:"status_code"`
-		Data       []Car  `json:"car"`
+		Data       []Car  `json:"data"`
 	}{
 		Message:    "car list successfully fetched",
 		StatusCode: 200,
