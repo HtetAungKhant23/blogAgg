@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/HtetAungKhant23/blogAgg/internal/database"
 	"github.com/go-chi/chi/v5"
@@ -36,9 +37,12 @@ func main() {
 		log.Fatalf("Can't connect to database: %v", err)
 	}
 
+	db := database.New(conn)
 	apiCfg := apiConfig{
-		DB: database.New(conn),
+		DB: db,
 	}
+
+	go startScraping(db, 10, time.Minute)
 
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
@@ -56,6 +60,7 @@ func main() {
 
 	v1Router.Post("/user", apiCfg.handlerCreateUser)
 	v1Router.Get("/user", apiCfg.middlewareAuth(apiCfg.handlerGetUser))
+	v1Router.Get("/user/posts", apiCfg.middlewareAuth(apiCfg.handlerGetPost))
 	v1Router.Post("/feed", apiCfg.middlewareAuth(apiCfg.handlerCreateFeed))
 	v1Router.Get("/feeds", apiCfg.handlerGetFeeds)
 	v1Router.Post("/feed-follow", apiCfg.middlewareAuth(apiCfg.handlerFeedFollow))
