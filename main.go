@@ -71,6 +71,11 @@ func main() {
 
 	router.Mount("/v1", v1Router)
 
+	v2Router := chi.NewRouter()
+	v2Router.Get("/car-list", apiCfg.handlerCarList)
+
+	router.Mount("/v2", v2Router)
+
 	srv := &http.Server{
 		Handler: router,
 		Addr:    ":" + portString,
